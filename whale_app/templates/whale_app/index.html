@@ -1,0 +1,107 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Whale</title>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.min.css" rel="stylesheet"/>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        /* Add any inline CSS if necessary */
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar d-flex bg-transparent px-3">
+        <div class="avatar-container text-center">
+            <img src="{% static 'img/avatar2.jpeg' %}" alt="Small Avatar" class="avatar-small rounded-circle">
+            <div class="progress mt-2" style="height: 5px; width: 50px; margin: 0 auto;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div>Coins per Hour: <span>+0</span></div>
+        <div class="menu-icon mx-3"><i class="fas fs-1 fa-bars"></i></div>
+    </div>
+
+    <!-- Avatar Section -->
+    <div class="avatar-section text-center">
+        <div class="tap-message" id="tap-message">Tap Me</div>
+        <div class="coins-counter" style="position: relative;">
+            <i class="fas fa-coins fs-1 me-2" style="color: rgb(0, 122, 230); margin-right: 5px;"></i>
+            <span class="coin-number">{{ coins }}</span>
+        </div>
+        <img src="{% static 'img/avatar.png' %}" alt="Avatar" class="avatar-img" id="avatar-img">
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="navbar navbar-dark fixed-bottom py-0">
+        <ul class="nav justify-content-around w-100">
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="#"><i class="fas fa-bolt"></i><div>Boost</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="#"><i class="fas fa-city"></i><div>City</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1; position: relative;">
+                <a class="nav-link text-warning active" href="#">
+                    <img src="{% static 'img/avatar2.jpeg' %}" alt="Mining Avatar" class="nav-image rounded-circle" style="width: 70px; height: 70px;">
+                    <i class="fas fa-pickaxe"></i><div>Mining</div>
+                </a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="#"><i class="fas fa-users"></i><div>Friends</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="#"><i class="fas fa-scroll"></i><div>Quests</div></a>
+            </li>
+        </ul>
+    </nav>
+    
+    <!-- AJAX script for tapping coins -->
+    <script>
+        {% comment %} document.getElementById('avatar-img').addEventListener('click', function() {
+            fetch("{% url 'tap_coin' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",  // Use CSRF token if CSRF is enabled
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.coins) {
+                    document.querySelector('.coin-number').textContent = data.coins;
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }); {% endcomment %}
+
+        async src="https://telegram.org/js/telegram-widget.js?7" 
+        data-telegram-login="YOUR_BOT_USERNAME" 
+        data-size="large" 
+        data-auth-url="{% url 'telegram_auth' %}" 
+        data-request-access="write">
+
+    </script>
+    
+    <!-- MDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.umd.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

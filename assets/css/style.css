@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url('./assets/background.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Navigation Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.avatar-small {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #a5aa5b;
+    padding: 2px;
+    /* background-color: black; */
+}
+
+/* Avatar Section */
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 300px);
+    margin-top: 100px;
+    position: relative;
+}
+
+/* Avatar Image */
+.avatar-img {
+    width: 280px; /* Maintain original width */
+    height: auto; /* Maintain original height based on width */
+    margin-top: 50px;
+    cursor: pointer; /* Make avatar clickable */
+    display: block; /* Ensure no extra space below the image */
+}
+
+/* Text Overlay */
+.tap-message {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none; /* Ensure it doesn't interfere with clicking */
+}
+
+.coins-counter {
+    font-size: 34px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+/* Bottom Navigation */
+.fixed-bottom {
+    background-color: rgba(3, 107, 197, 0.7);
+    color: white;
+}
+
+.nav-item {
+    text-align: center;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.nav-item:hover {
+    background-color: #a5aa5b;
+}
+
+.nav-item .active {
+    color: white !important;
+    background: #a5aa5b;
+}
+
+.nav-item .nav-image {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #a5aa5b;
+}
+
+/* Floating +3 Animation */
+.floating-plus {
+    position: absolute;
+    font-size: 24px;
+    color: white;
+    animation: floatUp 1s ease-in-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* Zoom effect for avatar when tapped */
+.zoom-avatar {
+    transform: scale(1.05); /* Scale the avatar to 1.2 times its size */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}

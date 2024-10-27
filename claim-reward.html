@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Crypto Reward</title>
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.min.css"
+    rel="stylesheet"
+    />
+    <!-- Telegram Web App Script -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>  
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #2e3b5b;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Top Bar Styling */
+        .top-bar {
+            background: linear-gradient(90deg, #a5aa5b 0%, rgba(3, 107, 197, 0.7) 100%);
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .binance-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .profit-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .profit-value {
+            font-size: 0.8rem;
+            margin-left: 8px;
+            color: #b8d1ff; /* Light blue text */
+        }
+        
+        .fas.fa-gem {
+            color: #b8d1ff; /* Diamond color to match the screenshot */
+        }
+        
+        .fas.fa-info-circle {
+            color: #aaa; /* Gray color for info icon */
+        }
+        
+        .right-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .fas.fa-cog {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+        
+        .memories-btn {
+            background-color: rgba(98, 0, 121, 0.6); /* Purple gradient background */
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        
+        .memories-btn:hover {
+            background-color: rgba(98, 0, 121, 0.8);
+        }
+        
+        .memories-btn i {
+            font-size: 0.8rem;
+            color: #ff4c91; /* Pink color for the heart icon */
+        }
+        
+        /* Responsive Layout */
+        @media only screen and (max-width: 768px) {
+            .profit-section {
+                font-size: 0.9rem;
+                padding: 5px 10px;
+            }
+        
+            .binance-icon {
+                width: 30px;
+                height: 30px;
+            }
+        
+            .memories-btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        
+            .memories-btn i {
+                font-size: 0.8rem;
+            }
+        }
+        
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            width: 350px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            /*margin-top: 35px;*/
+        }
+
+        .total-coins {
+            font-size: 1.4rem;
+            color: #b8d1ff;
+            margin-bottom: 20px;
+            
+        }
+
+        .instruction {
+            font-size: 1rem;
+            text-align: left;
+            color: #b8d1ff;
+        }
+
+        .instruction p {
+            margin: 8px 0;
+        }
+
+        .contract-address {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .copy-btn {
+            background-color: rgba(3, 107, 197, 0.7);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #a5aa5b;
+        }
+
+        .address-box {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        
+        .address-box-container {
+            position: relative; /* Allows absolute positioning of the button */
+        }
+        
+        .address-box {
+            padding-right: 60px; /* Add padding to the right to make space for the button */
+        }
+        
+        .address-box::placeholder {
+            color: #f0f0f0; /* Set placeholder color to white */
+            opacity: 1; /* Ensure opacity is set to 1 */
+        }
+
+        .days-left {
+            font-weight: bold;
+            color: #ff4c91;
+            margin: 10px 0;
+        }
+
+        .claim-btn {
+            background-color: rgba(3, 107, 197, 0.7);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .claim-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* Success Message Styling */
+        #copySuccess {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            max-width: 300px;
+            padding-right: 0;
+            display: none;
+            background-color: #002a00;
+            color: #00c851;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        #copySuccess i {
+            color: #00c851;
+            margin-right: 5px;
+        }
+        
+        .fixed-bottom {
+            background-color: rgba(3, 107, 197, 0.7);
+            color: white;
+            border-top: 2px solid #a5aa5b; /* Top border */
+            box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.5); /* Shadow for the bottom nav bar */
+        }
+    
+        .nav-item {
+            text-align: center;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+    
+        .nav-item:hover {
+            background-color: #a5aa5b;
+        }
+    
+        .nav-item .active {
+            color: white !important;
+            background: #a5aa5b;
+        }
+    
+        .nav-item .nav-image {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #a5aa5b;
+        }
+        
+        /* Styling for the "Go Back" button */
+        .go-back-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #fff; /* Ensures the color matches the theme */
+            font-size: 1.5rem; /* Adjust size for better visibility */
+            transition: color 0.3s ease;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .go-back-btn:hover {
+            color: #f39c12; /* Highlight color on hover for a stylish effect */
+        }
+        
+        .go-back-btn i {
+            font-size: 1.5rem;
+            color: #ffffff; /* Icon color */
+        }
+        
+        .address-box-container {
+            position: relative; /* Allows absolute positioning of the button */
+        }
+        
+        .paste-btn {
+            position: absolute; /* Positioning the button inside the input field */
+            right: 10px; /* Right padding */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Center the button */
+            border: none;
+            background-color: rgba(3, 107, 197, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .paste-btn:hover {
+            background-color: #a5aa5b;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Success Message (hidden by default) -->
+    <div id="copySuccess" role="alert">
+        <i class="fas fa-check-circle"></i> Contract Address Copied
+    </div>
+    
+    
+    <div class="top-bar d-flex justify-content-between align-items-center px-3">
+        <div class="left-section d-flex align-items-center">
+            <!-- Go Back Icon -->
+            <button onclick="goBack()" class="go-back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="profit-section ms-2 d-flex align-items-center">
+                <i class="fas fa-gem"></i>
+                <span class="profit-value ms-1">+3</span>
+                <i class="fas fa-info-circle ms-1"></i>
+            </div>
+        </div>
+    
+        <div class="right-section d-flex align-items-center">
+            <button class="memories-btn d-flex align-items-center">
+                <i class="fas fa-coins"></i> 
+                <span class="ms-1">1,000,000 = $10</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="total-coins">Total Mined Coin: <i class="fas fs-5 fa-coins" style="color: rgb(255, 215, 0);"></i> <span class="coin-number ms-1">0</span></div>
+        
+        <div class="instruction">
+            <p><strong>Instructions to Claim Reward:</strong></p>
+            <ol>
+                <li>Copy the contract address below.</li>
+                <li>Buy $2 worth of whale coin</li>
+                <li>You can make tier purchase using pancake Swap.</li>
+                <li>Purchase coin using BNB</li>
+            </ol>
+            <p>Contract address</p>
+        </div>
+    
+        <div class="contract-address">
+            <span>AXC12KCA B34</span>
+            <button class="copy-btn" onclick="copyAddress()">Copy</button>
+        </div>
+
+        <div class="instruction">
+            <p class="ps-4">5. If you purchased $2 of whale token, you would have a recieve address now.</p>
+            <label>Paste receive address Below:</label>
+        </div>
+        
+        <div class="address-box-container">
+            <input type="text" id="addressInput" placeholder="Paste receive address here" class="address-box text-white">
+            <button class="paste-btn" onclick="pasteAddress()">Paste</button>
+        </div>
+
+        <div class="days-left">7 days left to launch.</div>
+
+        <button class="claim-btn" id="claimButton" disabled>Claim Reward</button>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="navbar navbar-dark fixed-bottom py-0">
+        <ul class="nav justify-content-around w-100">
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="./boost.php"><i class="fas fa-bolt"></i><div>Boost</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="./city.php"><i class="fas fa-city"></i><div>City</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1; position: relative;">
+                <a class="nav-link text-warning active" href="./index.php">
+                    <img src="./assets/avatar2.jpeg" alt="Mining Avatar" class="nav-image rounded-circle" style="width: 70px; height: 70px;">
+                    <i class="fas fa-pickaxe"></i><div>Mining</div>
+                </a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="./referal.php"><i class="fas fa-users"></i><div>Friends</div></a>
+            </li>
+            <li class="nav-item text-center" style="flex: 1;">
+                <a class="nav-link text-white" href="./quest.php"><i class="fas fa-scroll"></i><div>Quests</div></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- MDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.umd.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="./assets/js/coin-home.js"></script>
+    <script>
+        function goBack() {
+            window.history.back(); // Takes the user to the previous page
+        }
+    
+        function copyAddress() {
+            const address = 'AXC12KCA B34';
+            navigator.clipboard.writeText(address).then(() => {
+                // Show success modal
+                const successModal = document.getElementById("copySuccess");
+                successModal.style.display = "block";
+                
+                // Hide the modal after 2 seconds
+                setTimeout(() => {
+                    successModal.style.display = "none";
+                }, 2000);
+            });
+        }
+        
+        function pasteAddress() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('addressInput').value = text; // Set the clipboard content to the input field
+            }).catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
+        }
+
+
+        // Enable the "Claim Reward" button after a delay (e.g., 5 seconds)
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('claimButton').disabled = false;
+            }, 3000); // Delay of 5 seconds (5000 milliseconds)
+        }
+    </script>
+    
+</body>
+</html>
